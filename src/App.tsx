@@ -9,6 +9,7 @@ export type CharObj = {
 
 export default function App() {
   const [character, setCharacter] = useState<CharObj>({ name: '', server: '' });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const serverRef = useRef<HTMLInputElement>(null);
@@ -17,16 +18,22 @@ export default function App() {
     e.preventDefault();
     const name = nameRef.current!.value;
     const server = serverRef.current!.value;
+    setIsLoading(true);
     return setCharacter({ name: `${name}`, server: `${server}` });
   }
 
+  if (!isLoading)
+    return (
+      <div>
+        <Form
+          onHandleSubmit={handleFormSubmit}
+          nameRef={nameRef}
+          serverRef={serverRef}
+        ></Form>
+      </div>
+    );
   return (
     <div>
-      <Form
-        onHandleSubmit={handleFormSubmit}
-        nameRef={nameRef}
-        serverRef={serverRef}
-      ></Form>
       <CharPanel character={character}></CharPanel>
     </div>
   );

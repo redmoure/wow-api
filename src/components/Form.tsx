@@ -12,11 +12,11 @@ function Form({ onHandleSubmit, nameRef, serverRef }: FormProps) {
       <form action="" onSubmit={onHandleSubmit}>
         <p>
           <label htmlFor="name">Name</label>
-          <input type="text" id="name" ref={nameRef} />
+          <input type="text" id="name" ref={nameRef} required />
         </p>
         <p>
           <label htmlFor="server">Server</label>
-          <input type="text" id="server" ref={serverRef} />
+          <input type="text" id="server" ref={serverRef} required />
         </p>
         <p>
           <button>Find</button>
