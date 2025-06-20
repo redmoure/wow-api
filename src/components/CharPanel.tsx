@@ -1,17 +1,27 @@
-// type CharPanelProps = {
-//   charObj: { name: string; server: string };
-// };
+import { useEffect, useState } from 'react';
 
-const obj = {
-  name: 'Amberian',
-  server: 'Draenor',
+type CharPanelProps = {
+  character: { name: string; server: string };
 };
 
-function CharPanel() {
+const API_CALL = `https://eu.api.blizzard.com/profile/wow/character`;
+
+function CharPanel({ character }: CharPanelProps) {
+  const [charObj, setCharObj] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(
+        `${API_CALL}/${character.server.toLowerCase()}/${character.name.toLowerCase()}/specializations `
+      );
+      const json = await res.json();
+      setCharObj(json);
+    };
+    fetchData();
+  }, [character]);
   return (
     <div>
-      <h2>{obj.name}</h2>
-      <h3>{obj.server}</h3>
+      <h2>Name: {character.name}</h2>
+      <h3>Server: {character.server}</h3>
     </div>
   );
 }

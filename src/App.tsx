@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useRef, type FormEvent } from 'react';
 import CharPanel from './components/CharPanel';
 import Form from './components/Form';
 
@@ -8,25 +8,26 @@ export type CharObj = {
 };
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [character, setCharacter] = useState<CharObj>({ name: '', server: '' });
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const serverRef = useRef<HTMLInputElement>(null);
 
   function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsLoading(true);
-    setCharacter({ name: 'Amberian', server: 'Draenor' });
+    const name = nameRef.current!.value;
+    const server = serverRef.current!.value;
+    return setCharacter({ name: `${name}`, server: `${server}` });
   }
-
-  if (!isLoading)
-    return (
-      <div>
-        <Form onHandleSubmit={handleFormSubmit}></Form>
-      </div>
-    );
 
   return (
     <div>
-      <CharPanel></CharPanel>
+      <Form
+        onHandleSubmit={handleFormSubmit}
+        nameRef={nameRef}
+        serverRef={serverRef}
+      ></Form>
+      <CharPanel character={character}></CharPanel>
     </div>
   );
 }
